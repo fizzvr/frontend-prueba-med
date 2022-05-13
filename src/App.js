@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import BienvenidoPagina from './contenedores/BienvenidoPagina';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import Appbar from './componentes/appbar';
 import Backdrop from '@mui/material/Backdrop';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './tema';
+import { Outlet } from 'react-router-dom';
 
 const App = () => {
   const [data, setData] = useState();
@@ -33,18 +36,21 @@ const App = () => {
     );
   }
   return (
-    <Box
-      sx={{
-        height: '100vh',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center center',
-        backgroundImage: `url('${data.url}')`
-      }}
-    >
-      <Appbar />
-      <BienvenidoPagina />;
-    </Box>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          height: '100vh',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundImage: `url('${data.url}')`
+        }}
+      >
+        <Appbar />
+        <Outlet />   
+      </Box>
+    </ThemeProvider>
   );
 };
 
