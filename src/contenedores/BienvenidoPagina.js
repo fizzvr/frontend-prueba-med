@@ -30,7 +30,7 @@ const BienvenidoPagina = () => {
               variant='contained'
               color='secondary'
               component={Link}
-              to='Especialidades'
+              to='especialidades'
               sx={{ margin: '20px' }}
             >
               Nuestras Especialidades
