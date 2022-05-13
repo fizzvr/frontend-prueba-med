@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { createRoot } from 'react-dom/client';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import BienvenidoPagina from './contenedores/BienvenidoPagina';
+import MedicosPagina from './contenedores/MedicosPagina';
+import EspecialidadesPagina from './contenedores/EspecialidadesPagina';
 import App from './App';
-import theme from './tema';
 
-const rootElement = document.getElementById('root');
-const root = createRoot(rootElement);
-
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <App />
-  </ThemeProvider>
+  <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<App />}>
+        <Route index element={<BienvenidoPagina />} />
+        <Route path='medicos' element={<MedicosPagina />} />
+        <Route path='especialidades' element={<EspecialidadesPagina />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>
 );
