@@ -1,28 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Medicos from '../componentes/medicos';
-import Especialidades from '../componentes/especialidades';
-import axios from 'axios';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 const BienvenidoPagina = () => {
   return (
-    <Container component='main' maxWidth='lg' sx={{ padding: '150px' }}>
-      <Grid
-        container
-        spacing={6}
-        direction='column'
-        alignItems='center'
-        justify='center'
-      >
-        <Grid item key={1} md={6} sm={6} xs={12}>
-          <Medicos />
+    <Container component='main' maxWidth='xs' sx={{ padding: '150px' }}>
+      <Paper sx={{ backgroundColor: '#ccc', padding: '15px' }}>
+        <Grid container direction='column' alignItems='center' justify='center'>
+          <Typography variant='h2' gutterBottom component='div'>
+            Metrored
+          </Typography>
+          <Grid item key={1} md={6} sm={6} xs={12}>
+            <Button
+              variant='contained'
+              color='secondary'
+              component={Link}
+              to='medicos'
+              sx={{ margin: '20px' }}
+            >
+              Nuestros Medicos
+            </Button>
+          </Grid>
+          <Grid item key={2} md={6} sm={6} xs={12}>
+            <Button
+              variant='contained'
+              color='secondary'
+              component={Link}
+              to='Especialidades'
+              sx={{ margin: '20px' }}
+            >
+              Nuestras Especialidades
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item key={2} md={6} sm={6} xs={12}>
-          <Especialidades />
-        </Grid>
-      </Grid>
+      </Paper>
     </Container>
   );
 };
