@@ -11,22 +11,41 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
+import { getEspecialidades } from '../servicios/especialidades';
+import { getCiudades } from '../servicios/ciudades';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const MedicosPagina = () => {
   const [ciudad, setCiudad] = React.useState('');
-  console.log('ciudad', ciudad)
   const [especialidad, setEspecialidad] = React.useState('');
-  console.log('especialidad', especialidad)
+  const [ciudadElegida, setCiudadElegida] = React.useState('');
+  const [especialidadElegida, setEspecialidadElegida] = React.useState('');
+
+  let especialidades = especialidad;
+  let ciudades = ciudad;
 
   const handleChangeMedicos = (event) => {
-    setCiudad(event.target.value);
+    setCiudadElegida(event.target.value);
   };
   const handleChangeEspecialidad = (event) => {
-    setEspecialidad(event.target.value);
+    setEspecialidadElegida(event.target.value);
   };
 
+  useEffect(() => {
+    getEspecialidades().then((items) => {
+      setEspecialidad(items);
+    });
+  }, []);
+
+  useEffect(() => {
+    getCiudades().then((items) => {
+      setCiudad(items);
+    });
+  }, []);
+
   return (
-    <Container component='main' maxWidth='lg' sx={{ paddingTop: '70px' }}>
+    <Container component='main' maxWidth='lg' sx={{ paddingTop: '40px' }}>
       <Paper sx={{ backgroundColor: '#ccc', padding: '15px' }}>
         <Box
           sx={{
@@ -44,13 +63,16 @@ const MedicosPagina = () => {
             <Select
               labelId='ciudad'
               id='ciudad'
-              value={ciudad}
+              value={ciudadElegida ? ciudadElegida : ''}
               label='Ciudad'
               onChange={handleChangeMedicos}
             >
-              <MenuItem value='QUITO'>QUITO</MenuItem>
-              <MenuItem value='GUAYAQUIL'>GUAYAQUIL</MenuItem>
-              <MenuItem value='CUENCA'>CUENCA</MenuItem>
+              {ciudades.length > 0 &&
+                ciudades.map((item, index) => (
+                  <MenuItem key={index} value={item.nombreCiudad}>
+                    {item.nombreCiudad}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
           <FormControl sx={{ width: '300px' }}>
@@ -58,13 +80,16 @@ const MedicosPagina = () => {
             <Select
               labelId='especialidad'
               id='especialidad'
-              value={especialidad}
+              value={especialidadElegida ? especialidadElegida : ''}
               label='Especialidades'
               onChange={handleChangeEspecialidad}
             >
-              <MenuItem value='ALERGOLOGÍA'>ALERGOLOGÍA</MenuItem>
-              <MenuItem value='CARDIOLOGÍA'>CARDIOLOGÍA</MenuItem>
-              <MenuItem value='CIRUGÍA GENERAL'>CIRUGÍA GENERAL</MenuItem>
+              {especialidades.length > 0 &&
+                especialidades.map((item, index) => (
+                  <MenuItem key={index} value={item.nombreEspecialidad}>
+                    {item.nombreEspecialidad}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
         </Box>
