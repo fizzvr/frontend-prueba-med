@@ -37,7 +37,7 @@ const MedicosPagina = () => {
           }}
         >
           <Typography variant='h4' gutterBottom component='div'>
-            Medicos
+            Lista Médicos
           </Typography>
           <FormControl sx={{ width: '300px' }}>
             <InputLabel id='ciudad'>Ciudad</InputLabel>

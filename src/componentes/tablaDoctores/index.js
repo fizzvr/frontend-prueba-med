@@ -14,7 +14,7 @@ const getCiudad = (params) => {
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 10 },
-  { field: 'nombre', headerName: 'NOMBRE', width: 250, sortable: false },
+  { field: 'nombre', headerName: 'MÉDICO', width: 250, sortable: false },
   { field: 'cedula', headerName: 'CEDULA', width: 150 },
   {
     field: 'cat_ciudades',

@@ -12,7 +12,7 @@ const EspecialidadesPagina = () => {
     <Container component='main' maxWidth='lg' sx={{ paddingTop: '70px' }}>
       <Paper sx={{ backgroundColor: '#ccc', padding: '15px' }}>
         <Typography variant='h4' gutterBottom component='div'>
-          Especialidades
+          Lista Especialidades
         </Typography>
         <Grid container direction='row' alignItems='top' justify='center'>
           <Grid item key={1} md={10} sm={6} xs={12}>
