@@ -1,49 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { getEspecialidades } from '../../servicios/especialidades';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 10 },
   {
-    field: 'especialidad',
+    field: 'nombreEspecialidad',
     headerName: 'ESPECIALIDAD',
     width: 200,
     sortable: false
   }
 ];
 
-const rows = [
-  {
-    id: 1,
-    especialidad: 'ALERGOLOGÍA'
-  },
-  {
-    id: 2,
-    especialidad: 'CARDIOLOGÍA'
-  },
-  {
-    id: 3,
-    especialidad: 'CIRUGÍA GENERAL'
-  },
-  {
-    id: 4,
-    especialidad: 'PEDIATRÍA'
-  },
-  {
-    id: 5,
-    especialidad: 'ODONTOLOGÍA'
-  }
-];
-
 export default function DataTable() {
   const [data, setData] = useState();
-  console.log('data', data);
+  const [rowData, setRowData] = useState();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    getEspecialidades().then((items) => {
+      setRowData(items);
+      setLoaded(true);
+    });
+    return () => setLoaded(false);
+  }, []);
+
+  if (loaded === false) {
+    return (
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+      >
+        <CircularProgress color='secondary' />
+      </Backdrop>
+    );
+  }
 
   return (
-    <div style={{ height: 500, width: '100%' }}>
+    <div style={{ height: 400, width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={rowData}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
