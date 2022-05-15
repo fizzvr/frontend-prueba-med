@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import TablaDoctores from '../componentes/tablaDoctores';
+import React, { useEffect } from 'react';
+import MainDoctores from '../componentes/medicos';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import InputLabel from '@mui/material/InputLabel';
@@ -13,8 +10,6 @@ import Select from '@mui/material/Select';
 import Box from '@mui/material/Box';
 import { getEspecialidades } from '../servicios/especialidades';
 import { getCiudades } from '../servicios/ciudades';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const MedicosPagina = () => {
   const [ciudad, setCiudad] = React.useState('');
@@ -93,42 +88,7 @@ const MedicosPagina = () => {
             </Select>
           </FormControl>
         </Box>
-        <Grid container direction='row' alignItems='top' justify='center'>
-          <Grid item key={1} md={10} sm={6} xs={12}>
-            <TablaDoctores />
-          </Grid>
-          <Grid item key={2} md={2} sm={6} xs={12}>
-            <Button
-              variant='contained'
-              color='success'
-              component={Link}
-              to='especialidades'
-              sx={{ margin: '20px' }}
-            >
-              Nuevo
-            </Button>
-            <Button
-              disabled={true}
-              variant='contained'
-              color='info'
-              component={Link}
-              to='especialidades'
-              sx={{ margin: '20px' }}
-            >
-              Modificar
-            </Button>
-            <Button
-              disabled={true}
-              variant='contained'
-              color='error'
-              component={Link}
-              to='especialidades'
-              sx={{ margin: '20px' }}
-            >
-              Borrar
-            </Button>
-          </Grid>
-        </Grid>
+        <MainDoctores />
       </Paper>
     </Container>
   );
