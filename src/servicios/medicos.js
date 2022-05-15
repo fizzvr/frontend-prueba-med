@@ -46,3 +46,22 @@ export function deleteMedico(item) {
       console.log(error);
     });
 }
+
+export function getMedicosporCiudad(item) {
+  return axios
+    .get(`http://localhost:5000/api/cat_medicos/asignado?ciudad=${item}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+export function getMedicosporEspecialidad(item) {
+  return axios
+    .get(`http://localhost:5000/api/cat_medicos/asignado?especialidad=${item}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
