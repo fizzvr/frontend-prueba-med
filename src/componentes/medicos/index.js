@@ -7,7 +7,9 @@ import {
   setMedicos,
   getMedicosID,
   updateMedico,
-  deleteMedico
+  deleteMedico,
+  getMedicosporCiudad,
+  getMedicosporEspecialidad
 } from '../../servicios/medicos';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -25,6 +27,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { getEspecialidades } from '../../servicios/especialidades';
 import { getCiudades } from '../../servicios/ciudades';
+import Typography from '@mui/material/Typography';
 
 const getEspecialidad = (params) => {
   return `${params.value.nombreEspecialidad}`;
@@ -60,6 +63,8 @@ const Medicos = () => {
   const [alert, setAlert] = useState(false);
   const [alertM, setAlertM] = useState(false);
   const [alertD, setAlertD] = useState(false);
+  const [alertC, setAlertC] = useState(false);
+  const [alertE, setAlertE] = useState(false);
   const [list, setList] = useState([]);
   const [data, setData] = useState();
   const [open, setOpen] = React.useState(false);
@@ -68,6 +73,11 @@ const Medicos = () => {
   const dataDelete = data ? data[0] : '';
   const [ciudad, setCiudad] = React.useState('');
   const [especialidad, setEspecialidad] = React.useState('');
+
+  const [ciudadConsulta, setCiudadConsulta] = React.useState('');
+  const [especialidadConsulta, setEspecialidadConsulta] = React.useState('');
+  const [ciudadElegida, setCiudadElegida] = React.useState('');
+  const [especialidadElegida, setEspecialidadElegida] = React.useState('');
 
   const methods = useForm({
     mode: 'onChange',
@@ -118,6 +128,20 @@ const Medicos = () => {
       }, 2000);
     }
   }, [alertD]);
+  useEffect(() => {
+    if (alertC) {
+      setTimeout(() => {
+        setAlertC(false);
+      }, 2000);
+    }
+  }, [alertC]);
+  useEffect(() => {
+    if (alertE) {
+      setTimeout(() => {
+        setAlertE(false);
+      }, 2000);
+    }
+  }, [alertE]);
 
   useEffect(() => {
     let mounted = true;
@@ -203,6 +227,31 @@ const Medicos = () => {
     setOpenModicar(false);
   };
 
+  const handleChangeCiudad = (event) => {
+    getMedicosporCiudad(event.target.value).then((items) => {
+      setCiudadElegida(items.nombre);
+      setAlertC(true);
+    });
+  };
+  const handleChangeEspecialidad = (event) => {
+    getMedicosporEspecialidad(event.target.value).then((items) => {
+      setEspecialidadElegida(items.nombre);
+      setAlertE(true);
+    });
+  };
+
+  useEffect(() => {
+    getEspecialidades().then((items) => {
+      setEspecialidadConsulta(items);
+    });
+  }, []);
+
+  useEffect(() => {
+    getCiudades().then((items) => {
+      setCiudadConsulta(items);
+    });
+  }, []);
+
   if (list === undefined) {
     return (
       <Backdrop
@@ -216,11 +265,63 @@ const Medicos = () => {
 
   return (
     <div className='wrapper'>
+      <Box
+        sx={{
+          minWidth: 120,
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '10px'
+        }}
+      >
+        <Typography variant='h4' gutterBottom component='div'>
+          Lista Médicos
+        </Typography>
+        <FormControl sx={{ width: '300px' }}>
+          <InputLabel id='ciudad'>Ciudad</InputLabel>
+          <Select
+            labelId='ciudad'
+            id='ciudad'
+            value={''}
+            label='Ciudad'
+            onChange={handleChangeCiudad}
+          >
+            {ciudadConsulta.length > 0 &&
+              ciudadConsulta.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.nombreCiudad}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        <FormControl sx={{ width: '300px' }}>
+          <InputLabel id='especialidad'>Especialidades</InputLabel>
+          <Select
+            labelId='especialidad'
+            id='especialidad'
+            value={''}
+            label='Especialidades'
+            onChange={handleChangeEspecialidad}
+          >
+            {especialidadConsulta.length > 0 &&
+              especialidadConsulta.map((item, index) => (
+                <MenuItem key={index} value={item.id}>
+                  {item.nombreEspecialidad}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+      </Box>
       <Grid container direction='row' alignItems='top' justify='center'>
         <Grid item key={1} md={10} sm={6} xs={12}>
           <div style={{ height: 400, width: '100%' }}>
             <DataGrid
-              rows={list}
+              rows={
+                ciudadElegida
+                  ? ciudadElegida
+                  : especialidadElegida
+                  ? especialidadElegida
+                  : list
+              }
               columns={columns}
               pageSize={5}
               rowsPerPageOptions={[5]}
@@ -554,6 +655,17 @@ const Medicos = () => {
           {alertD && (
             <Alert severity='error' sx={{ m: 2 }}>
               Eliminada correctamente!
+            </Alert>
+          )}
+          {alertC && (
+            <Alert severity='success' sx={{ m: 2 }}>
+              {ciudadElegida ? ciudadElegida.length : ' '} Médicos por ciudad
+            </Alert>
+          )}
+          {alertE && (
+            <Alert severity='success' sx={{ m: 2 }}>
+              {especialidadElegida ? especialidadElegida.length : ' '} Médicos
+              por especialidad
             </Alert>
           )}
         </Grid>
